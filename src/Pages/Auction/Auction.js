@@ -57,7 +57,7 @@ function AuctionPage() {
       try {
         // eslint-disable-next-line
         const { data } = await axios.delete(`/api/auctions/${id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo?.token}` },
         });
         setAuctions(auctions.filter((auction) => auction.id !== id));
         dispatch({
@@ -66,7 +66,7 @@ function AuctionPage() {
         });
         toast.success('Auction Deleted!');
       } catch (error) {
-        toast.error(error);
+        toast.error(error.message);
       }
     }
   };
@@ -119,7 +119,7 @@ function AuctionPage() {
                     imageUrl={product.imageUrl}
                     endDate={product.endDate}
                     currentBid={product.currentBid}
-                    highestBidder={product.userInfo.name}
+                    highestBidder={userInfo?.name}
                     handleDeleteAuction={() => handleDeleteAuction(product._id)}
                   />
                 ) : (
