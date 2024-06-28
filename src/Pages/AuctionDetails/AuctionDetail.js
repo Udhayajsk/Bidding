@@ -43,7 +43,7 @@ const AuctionDetail = () => {
       try {
         const response = await axios.get(`/api/auctions/${id}`, {
           headers: {
-            authorization: `Bearer ${userInfo.token}`,
+            authorization: `Bearer ${userInfo?.token}`,
           },
         });
         const data = response.data;
@@ -53,7 +53,9 @@ const AuctionDetail = () => {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
-    fetchData();
+    if (userInfo) {
+      fetchData();
+    }
 
     const newSocket = io(process.env.REACT_APP_API_PROXY);
     setSocket(newSocket);
@@ -61,28 +63,42 @@ const AuctionDetail = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [id, userInfo.token]);
+  }, [id, userInfo]);
 
   useEffect(() => {
     if (socket) {
       socket.on('bid', (updatedAuction) => {
         setAuction(updatedAuction);
       });
+      socket.on('connect_error', (err) => {
+        console.error('Socket connection error:', err);
+      });
+
+      socket.on('error', (err) => {
+        console.error('Socket error:', err);
+      });
+
+      return () => {
+        socket.off('bid');
+        socket.off('connect_error');
+        socket.off('error');
+      };
     }
   }, [socket]);
 
-  const handleSubmit = async (event, userName) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    try{
     const response = await axios.post(
       `/api/auctions/${id}/bids`,
       {
-        bidder: userName,
+        bidder: userInfo?.name,
         bidAmount: bid,
       },
       {
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${userInfo.token}`,
+          authorization: `Bearer ${userInfo?.token}`,
         },
       }
     );
@@ -92,6 +108,11 @@ const AuctionDetail = () => {
     setBid('');
     socket.emit('bid', data);
     toast.success('Bid Placed Successfully 🎉');
+  }
+  catch (error) {
+    console.error('Failed to place bid:', error);
+    toast.error('Failed to place bid');
+  }
   };
 
   const handleBidChange = (event) => {
@@ -145,7 +166,7 @@ const AuctionDetail = () => {
                 <div className="flex justify-between mb-2">
                   <p className="text-gray-500 text-sm">Highest Bidder</p>
                   <p className="text-lg font-semibold">
-                    {auction.bids[auction.bids.length - 1].bidder}
+                    {auction.bids[auction.bids.length - 1]?.bidder || 'N/A'}
                   </p>
                 </div>
               </div>
@@ -157,8 +178,8 @@ const AuctionDetail = () => {
                 {auction.bids.length > 0 && (
                   <div className="border-b border-gray-200 py-2">
                     <p className="text-lg font-semibold">
-                      {auction.bids[auction.bids.length - 1].bidder ===
-                      userInfo.name ? (
+                      {auction.bids[auction.bids.length - 1]?.bidder  ===
+                      userInfo?.name ? (
                         <button className="w-full py-2 px-4 bg-green-500 hover:bg-green-600 text-white duration-200 rounded-md mt-4">
                           ADD TO CART
                         </button>
@@ -174,14 +195,14 @@ const AuctionDetail = () => {
                   </div>
                 )}
               </>
-            ) : auction.bids[auction.bids.length - 1].bidder ===
-              userInfo.name ? (
+            ) : auction.bids.length > 0 && auction.bids[auction.bids.length - 1]?.bidder ===
+              userInfo?.name ? (
               <button className="inline-block px-6 py-2 w-full leading-5 font-semibold rounded-lg text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 cursor-default">
                 You have the highest bid 🎉
               </button>
             ) : userInfo ? (
               <form
-                onSubmit={(e) => handleSubmit(e, userInfo.name)}
+                onSubmit={ handleSubmit}
                 className="flex items-center"
               >
                 <div className="relative flex-grow mr-4">
