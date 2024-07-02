@@ -5,7 +5,7 @@ import { getError } from '../../utils';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './ProfilePage.css';
 
 const reducer = (state, action) => {
@@ -22,7 +22,7 @@ const reducer = (state, action) => {
 };
 
 function ProfilePage() {
-  const history = useHistory();
+ 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [name, setName] = useState(userInfo.name);
@@ -37,9 +37,9 @@ function ProfilePage() {
   const { id: userId } = params;
 
   const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
-    loadingUpdate: false,
+    loadingUpdate: false, 
   });
-
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
@@ -85,7 +85,7 @@ function ProfilePage() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
-    history.push('/signin');
+    navigate('/signin');
   }
 
   return (
