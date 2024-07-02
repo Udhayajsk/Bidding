@@ -88,7 +88,7 @@ function ProfilePage() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
-    window.location.href = '/signin';
+    window.location.replace('/signin');
   }
 
   return (
