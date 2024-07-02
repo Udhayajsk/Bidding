@@ -47,7 +47,7 @@ function ProfilePage() {
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
     if (!passwordRegex.test(password)) {
       toast.error(
-        'Password must be at least 8 characters long and contain at least one uppercase,lowercase letter, and one special character.'
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
       );
       return;
     }
@@ -56,6 +56,7 @@ function ProfilePage() {
       return;
     }
     try {
+      dispatch({ type: 'UPDATE_REQUEST' });
       const { data } = await axios.put(
         `/api/users/profile/${userId}`,
         {
@@ -65,25 +66,21 @@ function ProfilePage() {
           sellerName,
           sellerLogo,
           sellerDescription,
-        }, {
-        baseURL: 'https://bidding-backend.onrender.com',
-      },{
+        },
+        {
+          baseURL: 'https://bidding-backend.onrender.com',
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      dispatch({
-        type: 'UPDATE_SUCCESS',
-      });
+      dispatch({ type: 'UPDATE_SUCCESS' });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success('Information Updated Successfully 👾');
+      signoutHandler();
     } catch (err) {
-      dispatch({
-        type: 'UPDATE_FAIL',
-      });
+      dispatch({ type: 'UPDATE_FAIL' });
       toast.error(getError(err));
     }
-    signoutHandler();
   };
 
   function signoutHandler() {
