@@ -65,8 +65,9 @@ function ProfilePage() {
           sellerName,
           sellerLogo,
           sellerDescription,
-        },
-        {
+        }, {
+        baseURL: 'https://bidding-backend.onrender.com',
+      },{
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
