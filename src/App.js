@@ -29,7 +29,7 @@ import CreateAuction from "./Pages/CreateAuction/CreateAuction";
 import AuctionDetail from "./Pages/AuctionDetails/AuctionDetail";
 
 // Set the base URL for all axios requests
-axios.defaults.baseURL = 'https://bidding-backend.onrender.com';
+axios.defaults.baseURL = 'https://bidding-backend-1.onrender.com';
 
 function App() {
   return (
