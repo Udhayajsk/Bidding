@@ -5,6 +5,7 @@ import { getError } from '../../utils';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './ProfilePage.css';
 
 const reducer = (state, action) => {
@@ -21,6 +22,7 @@ const reducer = (state, action) => {
 };
 
 function ProfilePage() {
+  const history = useHistory();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [name, setName] = useState(userInfo.name);
@@ -83,7 +85,7 @@ function ProfilePage() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
-    window.location.replace('/signin');
+    history.push('/signin');
   }
 
   return (
