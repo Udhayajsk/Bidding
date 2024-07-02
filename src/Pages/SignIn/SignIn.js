@@ -29,7 +29,9 @@ function LoginPage() {
       const { data } = await axios.post('/api/users/signin', {
         email,
         password,
-      });
+      }, {
+      baseURL: 'https://bidding-backend.onrender.com', // Set the base URL here
+    });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
