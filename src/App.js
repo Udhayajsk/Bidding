@@ -30,7 +30,7 @@ import AuctionDetail from "./Pages/AuctionDetails/AuctionDetail";
 
 // Set the base URL for all axios requests
 axios.defaults.baseURL =
-  process.env.REACT_APP_API_PROXY || "http://localhost:5000";
+  process.env.REACT_APP_API_PROXY || "https://bidding-backend.onrender.com";
 
 function App() {
   return (
