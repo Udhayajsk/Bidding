@@ -30,7 +30,7 @@ function LoginPage() {
         email,
         password,
       }, {
-      baseURL: 'https://bidding-backend-1.onrender.com', // Set the base URL here
+      baseURL: 'https://bidding-backend.onrender.com', // Set the base URL here
     });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
