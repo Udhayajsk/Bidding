@@ -41,13 +41,14 @@ function RegisterPage() {
     }
 
     try {
-      const { data } = await axios.post('/api/users/signup', {
+      const { data } = await axios.post('http://localhost:5000/api/users/signup', {
         name,
         email,
         password,
       }, {
-      baseURL: 'https://bidding-backend.onrender.com', 
-    });
+        baseURL: 'https://bidding-backend-2.onrender.com', 
+      }
+    );
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
