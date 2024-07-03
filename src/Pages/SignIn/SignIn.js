@@ -26,12 +26,12 @@ function LoginPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/users/signin', {
+      const { data } = await axios.post('http://localhost:5000/api/users/signin', {
         email,
         password,
       }, {
-      baseURL: 'https://bidding-backend.onrender.com', // Set the base URL here
-    });
+        baseURL: 'https://bidding-backend.onrender.com',
+      });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
@@ -100,12 +100,9 @@ function LoginPage() {
             />
           </div>
           <div className="flex">
-            <Link
-              to={`/signup?redirect=${redirect}`}
-              className="self-start py-4 mt-4 mr-4 text-gray-600 font-semibold opacity-75 hover:opacity-100 transition-all duration-500"
-            >
-              New Customer?
-            </Link>
+          <Link to={`/signup?redirect=${redirect}`} className="self-start py-4 mt-4 mr-4 text-gray-600 font-semibold opacity-75 hover:opacity-100 transition-all duration-500">
+           New Customer?
+           </Link>  
             <Link
               to="/"
               className="self-end py-4 mt-4 ml-4 text-gray-600 font-bold opacity-75 hover:opacity-100 transition-all duration-500"
