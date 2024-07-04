@@ -26,11 +26,11 @@ function LoginPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:5000/api/users/signin', {
+      const { data } = await axios.post('/api/users/signin', {
         email,
         password,
       }, {
-        baseURL: 'https://bidding-backend-2.onrender.com',
+        baseURL: 'https://backend-ecombidding.onrender.com',
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
