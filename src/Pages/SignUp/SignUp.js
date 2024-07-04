@@ -41,12 +41,12 @@ function RegisterPage() {
     }
 
     try {
-      const { data } = await axios.post('http://localhost:5000/api/users/signup', {
+      const { data } = await axios.post('/api/users/signup', {
         name,
         email,
         password,
       }, {
-        baseURL: 'https://bidding-backend-2.onrender.com', 
+        baseURL: 'https://backend-ecombidding.onrender.com', 
       }
     );
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
